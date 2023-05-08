@@ -1,0 +1,59 @@
+//HongoMCC GAME launcher
+//Copyright (c) Hongo M.C.C. 2023. All rights reserved.
+mes "Loading..."
+//モジュール読み込み・初期化
+#include "kernel32.as"
+#include "user32.as"
+#include "hsp3util.as"
+#include "lmes.as"
+//lmesの設定
+lMes_ini
+newmod lma, mod_lmes,1024
+lMes lma,"こんにちは",100,100
+//フォントモジュール
+#module 
+	#uselib "gdi32.dll"
+	#func AddFontResourceEx "AddFontResourceExA" sptr, int, nullptr
+	#func RemoveFontResourceEx "RemoveFontResourceExA" sptr, int, nullptr
+
+	#deffunc addFont str fontFileName
+		AddFontResourceEx fontFileName, 0x10
+		sendmsg 0xffff, 0x001D, 0, 0
+	return
+
+	#deffunc removeFont str fontFileName
+		RemoveFontResourceEx fontFileName, 0x10
+		sendmsg 0xffff, 0x001D, 0, 0
+	return
+#global
+//フォント読み込み
+fontFile = "./media/fonts/JF-Dot-Shinonome14.ttf"
+addFont fontFile
+fontFile = "./media/fonts/Orbitron-VariableFont_wght.ttf"
+addFont fontFile
+//画面初期化
+screen 0,1280,720,0
+cls 4
+//画像読み込み
+celload "./media/logob.png",1
+celload "./media/logow.png",2
+
+
+pos 300,200
+celput 1,0,0.5,0.5
+wait 20
+pos 500,450
+color 255,255,255
+text 20
+font "Orbitron",50
+emes "Presents."
+wait 100
+
+repeat 1500
+color 255,255,255
+a=rnd(720)
+b=a+3
+boxf 0,a,1280,b
+await 1
+loop
+
