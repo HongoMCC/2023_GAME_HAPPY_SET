@@ -9,7 +9,7 @@ mes "Loading..."
 //lmesの設定
 lMes_ini
 newmod lma, mod_lmes,1024
-lMes lma,{"こんにちは"},100,100
+lMes lma,"こんにちは",100,100
 //フォントモジュール
 #module 
 	#uselib "gdi32.dll"
@@ -27,15 +27,15 @@ lMes lma,{"こんにちは"},100,100
 	return
 #global
 //フォント読み込み
-fontFile = "./media/fonts/JF-Dot-Shinonome14.ttf"
-addFont fontFile
-fontFile = "./media/fonts/Orbitron-VariableFont_wght.ttf"
-addFont fontFile
+addFont "./media/fonts/JF-Dot-Shinonome14.ttf"
+addFont "./media/fonts/Orbitron-VariableFont_wght.ttf"
 //画面初期化
 screen 0,1280,720,0
 cls 4
+//画像読み込み
 celload "./media/logob.png",1
-
+celload "./media/logow.png",2
+celload "./media/logowrbg.png",3
 
 pos 300,200
 celput 1,0,0.5,0.5
@@ -54,5 +54,24 @@ b=a+3
 boxf 0,a,1280,b
 await 1
 loop
-lmcolor lma,0,0,0
-lmDraw lma
+cls
+a=0
+b=1281
+repeat 450
+color 0,0,0
+boxf a,450,a+5,650
+boxf b-5,450,b,650
+await 5
+a+=10
+b-=10
+loop
+a=255
+
+repeat 255
+color a,a,a
+pos 300,150
+font "Orbitron",40
+mes "Hongo Micro Computer Club"
+a-=1
+await 1
+loop
