@@ -6,10 +6,6 @@ mes "Loading..."
 #include "user32.as"
 #include "hsp3util.as"
 #include "lmes.as"
-//lmesの設定
-lMes_ini
-newmod lma, mod_lmes,1024
-lMes lma,"こんにちは",100,100
 //フォントモジュール
 #module 
 	#uselib "gdi32.dll"
@@ -29,6 +25,17 @@ lMes lma,"こんにちは",100,100
 //フォント読み込み
 addFont "./media/fonts/JF-Dot-Shinonome14.ttf"
 addFont "./media/fonts/Orbitron-VariableFont_wght.ttf"
+//lmesの設定
+lmes_ini
+fsize = 24
+scr = 0.0
+newmod id_lmesLayer, mod_lmes, 1024
+lmFont id_lmesLayer, "JFドット東雲ゴシック14", fsize, 1+16, 3
+lmColor id_lmesLayer, $ff, $ff, $ff
+lmOption id_lmesLayer, 2+8, $0, $0, $0
+
+		
+lMes id_lmesLayer, {"リターン キーまたはスペース キーを押してください."}, 0, 0
 //画面初期化
 screen 0,1280,720,0
 cls 4
@@ -36,7 +43,10 @@ cls 4
 celload "./media/logob.png",1
 celload "./media/logow.png",2
 celload "./media/logowrbg.png",3
-
+//音楽・効果音読み込み
+mmload "./media/music/menu.mp3",1,1
+mmload "./media/music/title.mp3",2,1
+mmload "./media/music/enter.mp3",3,0
 pos 300,200
 celput 1,0,0.5,0.5
 wait 20
@@ -46,7 +56,8 @@ text 20
 font "Orbitron",50
 emes "Presents."
 wait 100
-
+stick key
+if key=32:goto *start
 repeat 1500
 color 255,255,255
 a=rnd(720)
@@ -65,13 +76,72 @@ await 5
 a+=10
 b-=10
 loop
-a=255
 
+*start
+cls
+
+color 0,0,0
+boxf 0,450,1280,650
+a=255
 repeat 255
 color a,a,a
-pos 300,150
+pos 200,150
 font "Orbitron",40
 mes "Hongo Micro Computer Club"
 a-=1
 await 1
+loop
+a=255
+repeat 255
+color a,a,a
+pos 200,230
+font "Orbitron",100
+mes "Game Happy Set"
+a-=1
+await 1
+loop
+text 20
+color 0,0,0
+pos 335,335
+font "JFドット東雲ゴシック14",20
+emes "本郷学園マイコン部　ゲーム詰め合わせ"
+
+mmplay 2
+a=0
+b=0
+repeat
+stick key
+color a,a,a
+pos 380,525
+font "Orbitron",40
+mes "Press [Enter] or [Space]"
+
+if a<255 and b=0:a+=1
+if a=255 and b=0:b=1:a-=1
+if a<255 and b=1:a-=1
+if a=0 and b=1:b=0:a+=1
+if key=32 or key=16:break
+if scr > 1.0 : scr = 0.0
+if scr2 > 1.0 : scr2 = 0.0
+if scr4 > 1.0 : scr4 = 0.0
+
+await 1
+loop
+mmplay 3
+repeat 100
+pos 380,525
+color rnd(255),rnd(255),rnd(255)
+font "Orbitron",40
+mes "Press [Enter] or [Space]"
+await 1
+loop
+a=0
+b=1281
+repeat 450
+color 0,0,0
+boxf a,0,a+5,720
+boxf b-5,0,b,720
+await 2
+a+=10
+b-=10
 loop
